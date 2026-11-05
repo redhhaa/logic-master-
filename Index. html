@@ -1,1 +1,133 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+<title>Logic Master</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #141e30, #243b55);
+  color: white;
+  text-align: center;
+  padding: 30px;
+}
+.game {
+  max-width: 500px;
+  margin: auto;
+  background: rgba(255,255,255,0.1);
+  padding: 25px;
+  border-radius: 20px;
+}
+button {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+}
+button:hover {
+  transform: scale(1.02);
+}
+#next {
+  background: #00c853;
+  color: white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="game">
+  <h1>🧠 Logic Master</h1>
+  <p id="question"></p>
+
+  <div id="answers"></div>
+
+  <p id="result"></p>
+  <p>Score: <span id="score">0</span></p>
+
+  <button id="next" onclick="nextQuestion()">Next Question ➡️</button>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "What comes next? 2, 4, 8, 16, ?",
+    a: ["20", "24", "32", "36"],
+    correct: 2
+  },
+  {
+    q: "There are 10 sheep. All but 3 run away. How many are left?",
+    a: ["3", "7", "10", "0"],
+    correct: 0
+  },
+  {
+    q: "Which month has 28 days?",
+    a: ["February", "January", "All months", "December"],
+    correct: 2
+  },
+  {
+    q: "You overtake the person in 2nd place. What place are you in?",
+    a: ["1st", "2nd", "3rd", "4th"],
+    correct: 1
+  },
+  {
+    q: "What has hands but cannot clap?",
+    a: ["A robot", "A clock", "A tree", "A phone"],
+    correct: 1
+  }
+];
+
+let current = 0;
+let score = 0;
+
+function showQuestion() {
+  document.getElementById("question").textContent = questions[current].q;
+
+  const answers = document.getElementById("answers");
+  answers.innerHTML = "";
+
+  questions[current].a.forEach((answer, index) => {
+    const button = document.createElement("button");
+    button.textContent = answer;
+
+    button.onclick = function() {
+      if (index === questions[current].correct) {
+        score++;
+        document.getElementById("result").textContent = "✅ Correct!";
+      } else {
+        document.getElementById("result").textContent = "❌ Wrong!";
+      }
+
+      document.getElementById("score").textContent = score;
+    };
+
+    answers.appendChild(button);
+  });
+}
+
+function nextQuestion() {
+  current++;
+
+  if (current >= questions.length) {
+    document.getElementById("question").textContent =
+      "🎉 Game Complete!";
+    document.getElementById("answers").innerHTML = "";
+    document.getElementById("result").textContent =
+      "Your final score: " + score + " / " + questions.length;
+    document.getElementById("next").style.display = "none";
+    return;
+  }
+
+  document.getElementById("result").textContent = "";
+  showQuestion();
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>
